@@ -18,7 +18,7 @@ func login(scraper *twitterscraper.Scraper) error {
 	c := database.GetConn()
 	appName := os.Getenv("APP_NAME")
 	// 查找redis中是否存在cookies
-	cacheCookies, err := c.Do("GET", appName+"_cookies")
+	cacheCookies, err := c.Do("GET", appName+"_"+os.Getenv("TWITTER_USER")+"_cookies")
 	if err != nil {
 		panic(err)
 	}
@@ -49,7 +49,7 @@ func login(scraper *twitterscraper.Scraper) error {
 				// convert to string
 				cookiesString := string(js)
 				// save to redis
-				_, err := c.Do("SET", appName+"_cookies", cookiesString)
+				_, err := c.Do("SET", appName+"_"+os.Getenv("TWITTER_USER")+"_cookies", cookiesString)
 				if err != nil {
 					fmt.Println(">>> Saving cookies to redis failed")
 					return err
@@ -71,7 +71,7 @@ func login(scraper *twitterscraper.Scraper) error {
 			// convert to string
 			cookiesString := string(js)
 			// save to redis
-			_, err := c.Do("SET", appName+"_cookies", cookiesString)
+			_, err := c.Do("SET", appName+"_"+os.Getenv("TWITTER_USER")+"_cookies", cookiesString)
 			if err != nil {
 				fmt.Println(">>> Saving cookies to redis failed")
 				return err

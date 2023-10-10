@@ -82,14 +82,14 @@ func login(scraper *twitterscraper.Scraper) error {
 }
 
 func GetTweets() {
-	scraper := twitterscraper.New()
+	scraper := twitterscraper.New().WithReplies(true)
 
 	err := login(scraper)
 	if err != nil {
 		fmt.Println(">>> Twitter login failed")
 		panic(err)
 	}
-
+	scraper.SetSearchMode(twitterscraper.SearchLatest)
 	for tweet := range scraper.SearchTweets(context.Background(), "from:"+os.Getenv("TARGET_USER_ID"), 3) {
 		if tweet.Error != nil {
 			panic(tweet.Error)

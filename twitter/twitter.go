@@ -90,7 +90,7 @@ func GetTweets() {
 		panic(err)
 	}
 
-	for tweet := range scraper.GetTweets(context.Background(), os.Getenv("TARGET_USER_ID"), 1) {
+	for tweet := range scraper.SearchTweets(context.Background(), "from:"+os.Getenv("TARGET_USER_ID"), 3) {
 		if tweet.Error != nil {
 			panic(tweet.Error)
 		}
@@ -99,7 +99,7 @@ func GetTweets() {
 		if tweet.IsRetweet {
 			action = "🔫 "
 		} else if tweet.IsReply {
-			action = "【回复】"
+			action = "💬 "
 		} else if tweet.IsQuoted {
 			action = "🔫 "
 			Pin = true

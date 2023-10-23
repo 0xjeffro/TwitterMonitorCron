@@ -90,7 +90,7 @@ func GetTweets() {
 		panic(err)
 	}
 	scraper.SetSearchMode(twitterscraper.SearchLatest)
-	for tweet := range scraper.SearchTweets(context.Background(), "from:"+os.Getenv("TARGET_USER_ID"), 5) {
+	for tweet := range scraper.SearchTweets(context.Background(), "from:"+os.Getenv("TARGET_USER_ID"), 10) {
 		if tweet.Error != nil {
 			panic(tweet.Error)
 		}

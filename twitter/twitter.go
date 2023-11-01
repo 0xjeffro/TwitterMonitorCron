@@ -123,8 +123,8 @@ func GetTweets() {
 				tweet.PermanentURL)
 			if err == nil {
 				// 发送消息
-				Text := action + string([]rune(tweet.Text)[:18])
-				if len([]rune(tweet.Text)) > 18 {
+				Text := action + string([]rune(tweet.Text)[:30])
+				if len([]rune(tweet.Text)) > 30 {
 					Text += "..."
 				}
 				URL := tweet.PermanentURL

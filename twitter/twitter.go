@@ -123,9 +123,15 @@ func GetTweets() {
 				tweet.PermanentURL)
 			if err == nil {
 				// 发送消息
-				Text := action + string([]rune(tweet.Text)[:40])
-				if len([]rune(tweet.Text)) > 40 {
-					Text += "..."
+				visibleLength := 80
+				Text := ""
+				if len([]rune(tweet.Text)) <= 80 {
+					Text = action + tweet.Text
+				} else {
+					Text = action + string([]rune(tweet.Text)[:visibleLength])
+					if len([]rune(tweet.Text)) > visibleLength {
+						Text += "..."
+					}
 				}
 				URL := tweet.PermanentURL
 				Token := os.Getenv("BOT_TOKEN")

@@ -123,7 +123,7 @@ func GetTweets() {
 				tweet.PermanentURL)
 			if err == nil {
 				// 发送消息
-				visibleLength := 100
+				visibleLength := 300
 				Text := ""
 				if len([]rune(tweet.Text)) <= visibleLength {
 					Text = action + tweet.Text

@@ -81,7 +81,7 @@ func login(scraper *twitterscraper.Scraper) error {
 	}
 }
 
-func GetTweets() {
+func GetTweets(target string) {
 	scraper := twitterscraper.New().WithReplies(true)
 
 	err := login(scraper)
@@ -90,7 +90,7 @@ func GetTweets() {
 		panic(err)
 	}
 	scraper.SetSearchMode(twitterscraper.SearchLatest)
-	for tweet := range scraper.SearchTweets(context.Background(), "from:"+os.Getenv("TARGET_USER_ID"), 10) {
+	for tweet := range scraper.SearchTweets(context.Background(), "from:"+target, 10) {
 		if tweet.Error != nil {
 			panic(tweet.Error)
 		}
@@ -111,7 +111,7 @@ func GetTweets() {
 		// 判断是否已经存在
 		isMember, err := redis.Bool(
 			conn.Do("SISMEMBER",
-				os.Getenv("APP_NAME")+"_"+os.Getenv("TARGET_USER_ID")+"_tweets",
+				os.Getenv("APP_NAME")+"_"+target+"_tweets",
 				tweet.PermanentURL))
 		if err != nil {
 			panic(err)
@@ -119,7 +119,7 @@ func GetTweets() {
 		if !isMember {
 			// 不存在则添加
 			_, err = conn.Do("SADD",
-				os.Getenv("APP_NAME")+"_"+os.Getenv("TARGET_USER_ID")+"_tweets",
+				os.Getenv("APP_NAME")+"_"+target+"_tweets",
 				tweet.PermanentURL)
 			if err == nil {
 				// 发送消息
